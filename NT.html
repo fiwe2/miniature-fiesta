@@ -4,8 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>New Tab</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <title>George's Marvellus Medicine</title>
 
   <style>
     * {
@@ -17,341 +16,76 @@
     body {
       font-family: Inter, system-ui, sans-serif;
       background: #0a0a0a;
-      color: #e4e4e7;
+      color: white;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 40px 20px;
+      padding: 20px;
     }
 
-    .clock {
-      font-size: 4rem;
+    h1 {
+      font-size: 2.5rem;
       font-weight: 600;
-      color: white;
-      letter-spacing: -2px;
+      margin-bottom: 32px;
+      text-align: center;
     }
 
-    .date {
-      color: #71717a;
-      font-size: 14px;
-      margin: 8px 0 32px;
-    }
-
-    .search-box {
+    form {
       display: flex;
-      align-items: center;
-      gap: 10px;
       width: 100%;
       max-width: 500px;
-      padding: 12px 16px;
-      margin-bottom: 40px;
+      padding: 14px 18px;
       background: #0f0f0f;
       border: 1px solid #1f1f1f;
       border-radius: 12px;
     }
 
-    .search-box i {
-      color: #71717a;
-    }
-
-    .search-box input {
+    input {
       flex: 1;
       min-width: 0;
       background: none;
       border: none;
       outline: none;
       color: white;
-      font: inherit;
-      font-size: 14px;
+      font-size: 15px;
+      font-family: inherit;
     }
 
-    .search-box input::placeholder {
-      color: #52525b;
-    }
-
-    .search-box select {
-      background: #1a1a1a;
-      border: none;
-      border-radius: 6px;
-      padding: 6px;
-      color: #aaa;
-      cursor: pointer;
-    }
-
-    .shortcuts {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 16px;
-      width: 100%;
-      max-width: 500px;
-    }
-
-    .shortcut {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      text-decoration: none;
-    }
-
-    .shortcut-icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 52px;
-      height: 52px;
-      background: #0f0f0f;
-      border: 1px solid #1f1f1f;
-      border-radius: 12px;
-      transition: .15s;
-    }
-
-    .shortcut:hover .shortcut-icon {
-      background: #1a1a1a;
-      transform: translateY(-2px);
-    }
-
-    .shortcut-icon img {
-      width: 22px;
-      height: 22px;
-      filter: brightness(0) invert(.7);
-    }
-
-    .shortcut-icon i {
+    input::placeholder {
       color: #71717a;
-      font-size: 20px;
-    }
-
-    .shortcut-label {
-      max-width: 65px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      color: #71717a;
-      font-size: 11px;
-    }
-
-    .shortcut:hover .shortcut-label {
-      color: white;
-    }
-
-    .quote {
-      position: fixed;
-      bottom: 24px;
-      max-width: 400px;
-      color: #52525b;
-      font-size: 13px;
-      text-align: center;
-    }
-
-    .loader {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 100;
-      align-items: center;
-      justify-content: center;
-      background: rgba(0, 0, 0, .9);
-    }
-
-    .loader.show {
-      display: flex;
-    }
-
-    .spinner {
-      width: 32px;
-      height: 32px;
-      border: 2px solid #1f1f1f;
-      border-top-color: white;
-      border-radius: 50%;
-      animation: spin .8s linear infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    @media (max-width: 420px) {
-      .clock { font-size: 3.2rem; }
-      .shortcuts { gap: 10px; }
-      .shortcut-icon { width: 46px; height: 46px; }
     }
   </style>
 </head>
 
 <body>
 
-  <div class="loader" id="loader">
-    <div class="spinner"></div>
-  </div>
+  <h1>George's Marvellus Medicine</h1>
 
-  <div class="clock" id="clock">00:00</div>
-  <div class="date" id="date"></div>
-
-  <form class="search-box" id="searchForm">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <input id="searchInput" placeholder="Search the web..." autocomplete="off">
-
-    <select id="engine">
-      <option value="https://search.brave.com/search?q=">Brave</option>
-      <option value="https://duckduckgo.com/?q=">DuckDuckGo</option>
-      <option value="https://www.google.com/search?q=">Google</option>
-    </select>
+  <form id="searchForm">
+    <input
+      id="searchInput"
+      type="text"
+      placeholder="Search the web..."
+      autocomplete="off"
+      autofocus
+    >
   </form>
 
-  <div class="shortcuts" id="shortcuts"></div>
-  <div class="quote" id="quote"></div>
-
   <script>
-    const $ = selector => document.querySelector(selector);
-
-    // Navigation
-    function navigate(url) {
-      $('#loader').classList.add('show');
-      window.parent.postMessage({ type: 'navigate', url }, '*');
-    }
-
-    // Clock
-    function updateClock() {
-      const now = new Date();
-
-      $('#clock').textContent = now.toLocaleTimeString('en-US', {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false
-      });
-
-      $('#date').textContent = now.toLocaleDateString('en-US', {
-        weekday: 'long',
-        month: 'long',
-        day: 'numeric'
-      });
-    }
-
-    updateClock();
-    setInterval(updateClock, 1000);
-
-    // Search
-    $('#searchForm').addEventListener('submit', event => {
+    document.getElementById('searchForm').addEventListener('submit', event => {
       event.preventDefault();
 
-      const query = $('#searchInput').value.trim();
+      const query = document.getElementById('searchInput').value.trim();
 
       if (query) {
-        navigate($('#engine').value + encodeURIComponent(query));
+        window.parent.postMessage({
+          type: 'navigate',
+          url: 'https://search.brave.com/search?q=' + encodeURIComponent(query)
+        }, '*');
       }
     });
-
-    // Default shortcuts
-    const defaultShortcuts = [
-      ['YouTube', 'youtube', 'https://youtube.com'],
-      ['GitHub', 'github', 'https://github.com'],
-      ['Discord', 'discord', 'https://discord.com'],
-      ['Twitter', 'x', 'https://twitter.com'],
-      ['Reddit', 'reddit', 'https://reddit.com'],
-      ['Spotify', 'spotify', 'https://spotify.com'],
-      ['Netflix', 'netflix', 'https://netflix.com'],
-      ['Twitch', 'twitch', 'https://twitch.tv'],
-      ['Gmail', 'gmail', 'https://mail.google.com']
-    ];
-
-    // Create shortcut
-    function createShortcut(name, url, icon) {
-      const item = document.createElement('div');
-      item.className = 'shortcut';
-      item.dataset.url = url;
-
-      const iconBox = document.createElement('div');
-      iconBox.className = 'shortcut-icon';
-
-      if (icon) {
-        const img = document.createElement('img');
-        img.src = `https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/${icon}.svg`;
-        img.alt = '';
-        iconBox.append(img);
-      } else {
-        iconBox.innerHTML = '<i class="fa-solid fa-link"></i>';
-      }
-
-      const label = document.createElement('span');
-      label.className = 'shortcut-label';
-      label.textContent = name;
-
-      item.append(iconBox, label);
-      $('#shortcuts').append(item);
-    }
-
-    // Display shortcuts
-    function renderShortcuts() {
-      $('#shortcuts').innerHTML = '';
-
-      defaultShortcuts.forEach(([name, icon, url]) => {
-        createShortcut(name, url, icon);
-      });
-
-      const saved = JSON.parse(localStorage.getItem('shortcuts') || '[]');
-
-      saved.forEach(item => {
-        createShortcut(item.name, item.url);
-      });
-
-      createShortcut('Add', '', null);
-      $('#shortcuts').lastElementChild.id = 'addShortcut';
-      $('#addShortcut .shortcut-icon').innerHTML =
-        '<i class="fa-solid fa-plus"></i>';
-    }
-
-    // Shortcut clicks
-    $('#shortcuts').addEventListener('click', event => {
-      const item = event.target.closest('.shortcut');
-
-      if (!item) return;
-
-      if (item.id === 'addShortcut') {
-        const name = prompt('Shortcut name:');
-        if (!name) return;
-
-        let url = prompt('URL:');
-        if (!url) return;
-
-        if (!/^https?:\/\//i.test(url)) {
-          url = 'https://' + url;
-        }
-
-        const saved = JSON.parse(localStorage.getItem('shortcuts') || '[]');
-        saved.push({ name, url });
-
-        localStorage.setItem('shortcuts', JSON.stringify(saved));
-        renderShortcuts();
-      } else {
-        navigate(item.dataset.url);
-      }
-    });
-
-    // Random quote
-    const quotes = [
-      'so tuff',
-      'it is what it is',
-      'do ur work',
-      'this is what happens when u dont touch grass',
-      'FULL BOX',
-      'FULL PIECE',
-      '200!',
-      'press esc + refresh + power button for hacks',
-      'press ctrl+x to hide your screen',
-      'change the tab title and favicon in settings',
-      'TEACHERR!',
-      'lebron lebron lebronn james',
-      'lebron is OUR goat'
-    ];
-
-    $('#quote').textContent =
-      quotes[Math.floor(Math.random() * quotes.length)];
-
-    renderShortcuts();
   </script>
 
 </body>
