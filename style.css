@@ -638,3 +638,9 @@ input.bar::placeholder {
 .flex {
     display: flex;
 }
+
+/* Hide the entire browser toolbar */
+.tabs,
+.nav {
+    display: none !important;
+}
