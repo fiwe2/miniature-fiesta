@@ -1,10 +1,12 @@
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>New Tab</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
   <style>
     * {
       box-sizing: border-box;
@@ -13,7 +15,7 @@
     }
 
     body {
-      font-family: 'Inter', system-ui, sans-serif;
+      font-family: Inter, system-ui, sans-serif;
       background: #0a0a0a;
       color: #e4e4e7;
       min-height: 100vh;
@@ -27,43 +29,42 @@
     .clock {
       font-size: 4rem;
       font-weight: 600;
+      color: white;
       letter-spacing: -2px;
-      margin-bottom: 8px;
-      color: #ffffff;
     }
 
     .date {
-      font-size: 14px;
       color: #71717a;
-      margin-bottom: 32px;
+      font-size: 14px;
+      margin: 8px 0 32px;
     }
 
     .search-box {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
+      width: 100%;
+      max-width: 500px;
+      padding: 12px 16px;
+      margin-bottom: 40px;
       background: #0f0f0f;
       border: 1px solid #1f1f1f;
       border-radius: 12px;
-      padding: 12px 16px;
-      width: 100%;
-      max-width: 500px;
-      margin-bottom: 40px;
     }
 
     .search-box i {
       color: #71717a;
-      font-size: 14px;
     }
 
     .search-box input {
       flex: 1;
-      background: transparent;
+      min-width: 0;
+      background: none;
       border: none;
       outline: none;
-      color: #e4e4e7;
+      color: white;
+      font: inherit;
       font-size: 14px;
-      font-family: inherit;
     }
 
     .search-box input::placeholder {
@@ -74,19 +75,17 @@
       background: #1a1a1a;
       border: none;
       border-radius: 6px;
-      color: #71717a;
-      padding: 6px 10px;
-      font-size: 12px;
+      padding: 6px;
+      color: #aaa;
       cursor: pointer;
-      outline: none;
     }
 
     .shortcuts {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       gap: 16px;
-      max-width: 500px;
       width: 100%;
+      max-width: 500px;
     }
 
     .shortcut {
@@ -94,20 +93,20 @@
       flex-direction: column;
       align-items: center;
       gap: 8px;
-      text-decoration: none;
       cursor: pointer;
+      text-decoration: none;
     }
 
     .shortcut-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
       width: 52px;
       height: 52px;
       background: #0f0f0f;
       border: 1px solid #1f1f1f;
       border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.15s;
+      transition: .15s;
     }
 
     .shortcut:hover .shortcut-icon {
@@ -118,45 +117,44 @@
     .shortcut-icon img {
       width: 22px;
       height: 22px;
-      filter: brightness(0) invert(0.7);
+      filter: brightness(0) invert(.7);
     }
 
     .shortcut-icon i {
-      font-size: 20px;
       color: #71717a;
+      font-size: 20px;
     }
 
     .shortcut-label {
-      font-size: 11px;
-      color: #71717a;
-      text-align: center;
-      max-width: 60px;
+      max-width: 65px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      color: #71717a;
+      font-size: 11px;
     }
 
     .shortcut:hover .shortcut-label {
-      color: #e4e4e7;
+      color: white;
     }
 
     .quote {
       position: fixed;
       bottom: 24px;
-      font-size: 13px;
-      color: #52525b;
       max-width: 400px;
+      color: #52525b;
+      font-size: 13px;
       text-align: center;
     }
 
     .loader {
+      display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.9);
-      display: none;
+      z-index: 100;
       align-items: center;
       justify-content: center;
-      z-index: 100;
+      background: rgba(0, 0, 0, .9);
     }
 
     .loader.show {
@@ -167,20 +165,25 @@
       width: 32px;
       height: 32px;
       border: 2px solid #1f1f1f;
-      border-top-color: #ffffff;
+      border-top-color: white;
       border-radius: 50%;
-      animation: spin 0.8s linear infinite;
+      animation: spin .8s linear infinite;
     }
 
     @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
+      to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 420px) {
+      .clock { font-size: 3.2rem; }
+      .shortcuts { gap: 10px; }
+      .shortcut-icon { width: 46px; height: 46px; }
     }
   </style>
 </head>
 
 <body>
+
   <div class="loader" id="loader">
     <div class="spinner"></div>
   </div>
@@ -190,7 +193,8 @@
 
   <form class="search-box" id="searchForm">
     <i class="fa-solid fa-magnifying-glass"></i>
-    <input type="text" id="searchInput" placeholder="Search the web..." autocomplete="off">
+    <input id="searchInput" placeholder="Search the web..." autocomplete="off">
+
     <select id="engine">
       <option value="https://search.brave.com/search?q=">Brave</option>
       <option value="https://duckduckgo.com/?q=">DuckDuckGo</option>
@@ -198,140 +202,157 @@
     </select>
   </form>
 
-  <div class="shortcuts" id="shortcuts">
-    <a class="shortcut" data-url="https://youtube.com">
-      <div class="shortcut-icon"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg">
-      </div>
-      <span class="shortcut-label">YouTube</span>
-    </a>
-    <a class="shortcut" data-url="https://github.com">
-      <div class="shortcut-icon"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/github.svg">
-      </div>
-      <span class="shortcut-label">GitHub</span>
-    </a>
-    <a class="shortcut" data-url="https://discord.com">
-      <div class="shortcut-icon"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/discord.svg">
-      </div>
-      <span class="shortcut-label">Discord</span>
-    </a>
-    <a class="shortcut" data-url="https://twitter.com">
-      <div class="shortcut-icon"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg"></div>
-      <span class="shortcut-label">Twitter</span>
-    </a>
-    <a class="shortcut" data-url="https://reddit.com">
-      <div class="shortcut-icon"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/reddit.svg">
-      </div>
-      <span class="shortcut-label">Reddit</span>
-    </a>
-    <a class="shortcut" data-url="https://spotify.com">
-      <div class="shortcut-icon"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/spotify.svg">
-      </div>
-      <span class="shortcut-label">Spotify</span>
-    </a>
-    <a class="shortcut" data-url="https://netflix.com">
-      <div class="shortcut-icon"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/netflix.svg">
-      </div>
-      <span class="shortcut-label">Netflix</span>
-    </a>
-    <a class="shortcut" data-url="https://twitch.tv">
-      <div class="shortcut-icon"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/twitch.svg">
-      </div>
-      <span class="shortcut-label">Twitch</span>
-    </a>
-    <a class="shortcut" data-url="https://mail.google.com">
-      <div class="shortcut-icon"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/gmail.svg"></div>
-      <span class="shortcut-label">Gmail</span>
-    </a>
-    <div class="shortcut" id="addShortcut">
-      <div class="shortcut-icon"><i class="fa-solid fa-plus"></i></div>
-      <span class="shortcut-label">Add</span>
-    </div>
-  </div>
-
+  <div class="shortcuts" id="shortcuts"></div>
   <div class="quote" id="quote"></div>
 
   <script>
-    const $ = s => document.querySelector(s);
-    const nav = url => {
+    const $ = selector => document.querySelector(selector);
+
+    // Navigation
+    function navigate(url) {
       $('#loader').classList.add('show');
-      window.parent?.postMessage({ type: 'navigate', url }, '*');
-    };
+      window.parent.postMessage({ type: 'navigate', url }, '*');
+    }
 
     // Clock
     function updateClock() {
       const now = new Date();
-      $('#clock').textContent = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
-      $('#date').textContent = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+
+      $('#clock').textContent = now.toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+      });
+
+      $('#date').textContent = now.toLocaleDateString('en-US', {
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric'
+      });
     }
+
     updateClock();
     setInterval(updateClock, 1000);
 
     // Search
-    $('#searchForm').onsubmit = e => {
-      e.preventDefault();
-      const q = $('#searchInput').value.trim();
-      if (q) nav($('#engine').value + encodeURIComponent(q));
-    };
+    $('#searchForm').addEventListener('submit', event => {
+      event.preventDefault();
 
-    // Shortcuts
-    $('#shortcuts').onclick = e => {
-      const shortcut = e.target.closest('.shortcut[data-url]');
-      const addBtn = e.target.closest('#addShortcut');
+      const query = $('#searchInput').value.trim();
 
-      if (shortcut) {
-        e.preventDefault();
-        nav(shortcut.dataset.url);
-      } else if (addBtn) {
-        const name = prompt("Shortcut name:");
-        if (!name) return;
-        let url = prompt("URL:");
-        if (!url) return;
-        if (!url.startsWith('http')) url = 'https://' + url;
-
-        const shortcuts = JSON.parse(localStorage.getItem('shortcuts') || '[]');
-        shortcuts.push({ name, url });
-        localStorage.setItem('shortcuts', JSON.stringify(shortcuts));
-        renderCustom();
+      if (query) {
+        navigate($('#engine').value + encodeURIComponent(query));
       }
-    };
+    });
 
-    function renderCustom() {
-      document.querySelectorAll('.custom-shortcut').forEach(e => e.remove());
-      const shortcuts = JSON.parse(localStorage.getItem('shortcuts') || '[]');
-      const addBtn = $('#addShortcut');
+    // Default shortcuts
+    const defaultShortcuts = [
+      ['YouTube', 'youtube', 'https://youtube.com'],
+      ['GitHub', 'github', 'https://github.com'],
+      ['Discord', 'discord', 'https://discord.com'],
+      ['Twitter', 'x', 'https://twitter.com'],
+      ['Reddit', 'reddit', 'https://reddit.com'],
+      ['Spotify', 'spotify', 'https://spotify.com'],
+      ['Netflix', 'netflix', 'https://netflix.com'],
+      ['Twitch', 'twitch', 'https://twitch.tv'],
+      ['Gmail', 'gmail', 'https://mail.google.com']
+    ];
 
-      shortcuts.forEach(s => {
-        const div = document.createElement('div');
-        div.className = 'shortcut custom-shortcut';
-        div.dataset.url = s.url;
-        div.innerHTML = `
-          <div class="shortcut-icon"><i class="fa-solid fa-link"></i></div>
-          <span class="shortcut-label">${s.name}</span>
-        `;
-        addBtn.before(div);
-      });
+    // Create shortcut
+    function createShortcut(name, url, icon) {
+      const item = document.createElement('div');
+      item.className = 'shortcut';
+      item.dataset.url = url;
+
+      const iconBox = document.createElement('div');
+      iconBox.className = 'shortcut-icon';
+
+      if (icon) {
+        const img = document.createElement('img');
+        img.src = `https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/${icon}.svg`;
+        img.alt = '';
+        iconBox.append(img);
+      } else {
+        iconBox.innerHTML = '<i class="fa-solid fa-link"></i>';
+      }
+
+      const label = document.createElement('span');
+      label.className = 'shortcut-label';
+      label.textContent = name;
+
+      item.append(iconBox, label);
+      $('#shortcuts').append(item);
     }
 
-    // Quote
+    // Display shortcuts
+    function renderShortcuts() {
+      $('#shortcuts').innerHTML = '';
+
+      defaultShortcuts.forEach(([name, icon, url]) => {
+        createShortcut(name, url, icon);
+      });
+
+      const saved = JSON.parse(localStorage.getItem('shortcuts') || '[]');
+
+      saved.forEach(item => {
+        createShortcut(item.name, item.url);
+      });
+
+      createShortcut('Add', '', null);
+      $('#shortcuts').lastElementChild.id = 'addShortcut';
+      $('#addShortcut .shortcut-icon').innerHTML =
+        '<i class="fa-solid fa-plus"></i>';
+    }
+
+    // Shortcut clicks
+    $('#shortcuts').addEventListener('click', event => {
+      const item = event.target.closest('.shortcut');
+
+      if (!item) return;
+
+      if (item.id === 'addShortcut') {
+        const name = prompt('Shortcut name:');
+        if (!name) return;
+
+        let url = prompt('URL:');
+        if (!url) return;
+
+        if (!/^https?:\/\//i.test(url)) {
+          url = 'https://' + url;
+        }
+
+        const saved = JSON.parse(localStorage.getItem('shortcuts') || '[]');
+        saved.push({ name, url });
+
+        localStorage.setItem('shortcuts', JSON.stringify(saved));
+        renderShortcuts();
+      } else {
+        navigate(item.dataset.url);
+      }
+    });
+
+    // Random quote
     const quotes = [
-    "so tuff",
-    "it is what it is",
-    "do ur work",
-    "this is what happens when u dont touch grass",
-    "FULL BOX",
-    "FULL PIECE",
-    "200!",
-    "press esc + refresh + power button for hacks",
-    "press ctrl+x to hide your screen",
-    "change the tab title and favicon in settings",
-    "TEACHERR!",
-    "lebron lebron lebronn james",
-    "lebron is OUR goat"
-];
-    $('#quote').textContent = quotes[Math.floor(Math.random() * quotes.length)];
+      'so tuff',
+      'it is what it is',
+      'do ur work',
+      'this is what happens when u dont touch grass',
+      'FULL BOX',
+      'FULL PIECE',
+      '200!',
+      'press esc + refresh + power button for hacks',
+      'press ctrl+x to hide your screen',
+      'change the tab title and favicon in settings',
+      'TEACHERR!',
+      'lebron lebron lebronn james',
+      'lebron is OUR goat'
+    ];
 
-    renderCustom();
+    $('#quote').textContent =
+      quotes[Math.floor(Math.random() * quotes.length)];
+
+    renderShortcuts();
   </script>
-</body>
 
+</body>
 </html>
