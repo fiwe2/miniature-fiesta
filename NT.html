@@ -3,81 +3,49 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>George's Marvellus Medicine</title>
-
+  <title>Search</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
+    * { box-sizing: border-box; }
     body {
-      font-family: Inter, system-ui, sans-serif;
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
       background: #ffffff;
       color: #111111;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
+      font-family: Inter, system-ui, sans-serif;
     }
-
-    h1 {
-      font-size: 2.5rem;
-      font-weight: 600;
-      margin-bottom: 32px;
-      text-align: center;
-    }
-
+    main { width: min(500px, calc(100vw - 40px)); text-align: center; }
+    h1 { margin: 0 0 32px; font-size: 32px; font-weight: 600; }
     form {
       display: flex;
       width: 100%;
-      max-width: 500px;
       padding: 14px 18px;
-      background: #ffffff;
       border: 1px solid #dddddd;
       border-radius: 12px;
+      background: #ffffff;
     }
-
     input {
-      flex: 1;
-      min-width: 0;
-      background: none;
-      border: none;
-      outline: none;
+      width: 100%;
+      border: 0;
+      outline: 0;
+      background: transparent;
       color: #111111;
-      font-size: 15px;
-      font-family: inherit;
-    }
-
-    input::placeholder {
-      color: #888888;
+      font: inherit;
     }
   </style>
 </head>
-
 <body>
-
-  <h1>George's Marvellus Medicine</h1>
-
-  <form id="searchForm">
-    <input
-      id="searchInput"
-      type="text"
-      placeholder="Search the web..."
-      autocomplete="off"
-      autofocus
-    >
-  </form>
-
+  <main>
+    <h1>Search</h1>
+    <form id="searchForm">
+      <input id="searchInput" type="text" placeholder="Search the web..." autocomplete="off" autofocus>
+    </form>
+  </main>
   <script>
     document.getElementById('searchForm').addEventListener('submit', event => {
-      event.preventDefault();
-
+      event.preventEventDefault?.();
       const query = document.getElementById('searchInput').value.trim();
-
       if (query) {
         window.parent.postMessage({
           type: 'navigate',
@@ -86,6 +54,5 @@
       }
     });
   </script>
-
 </body>
 </html>
