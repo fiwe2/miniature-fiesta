@@ -1,17 +1,12 @@
-/* Simplified full-screen browser */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 
 :root {
   --bg: #ffffff;
-  --surface: #ffffff;
-  --text: #111111;
   --text-muted: #777777;
   --border: #dddddd;
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 html,
 body,
@@ -20,9 +15,8 @@ body,
   height: 100%;
   margin: 0;
   overflow: hidden;
-  font-family: Inter, system-ui, -apple-system, sans-serif;
+  font-family: Inter, system-ui, sans-serif;
   background: var(--bg);
-  color: var(--text);
 }
 
 .browser-container,
@@ -31,15 +25,7 @@ body,
   height: 100%;
 }
 
-.browser-container {
-  display: flex;
-  flex-direction: column;
-}
-
-.iframe-container {
-  position: relative;
-  background: var(--bg);
-}
+.iframe-container { position: relative; }
 
 .iframe-container iframe {
   position: absolute;
@@ -49,15 +35,7 @@ body,
   border: 0;
 }
 
-.iframe-container iframe.hidden {
-  display: none;
-}
-
-.tabs,
-.nav,
-.loading-bar-container {
-  display: none !important;
-}
+.iframe-container iframe.hidden { display: none; }
 
 .message-container {
   position: absolute;
@@ -86,20 +64,17 @@ body,
   word-break: break-all;
 }
 
-.spinner,
-.tab-spinner {
+.spinner {
   width: 32px;
   height: 32px;
   margin: 0 auto 20px;
   border: 2px solid var(--border);
-  border-top-color: var(--text);
+  border-top-color: #111111;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
+@keyframes spin { to { transform: rotate(360deg); } }
 
 #skip-btn {
   display: none;
@@ -110,165 +85,4 @@ body,
   background: transparent;
   color: var(--text-muted);
   cursor: pointer;
-}
-
-.wisp-settings-modal {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.65);
-}
-
-.wisp-settings-modal.hidden {
-  display: none;
-}
-
-.settings-card {
-  width: 400px;
-  max-width: 90vw;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  background: var(--surface);
-}
-
-.settings-header,
-.settings-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 20px;
-  border-bottom: 1px solid var(--border);
-}
-
-.settings-header h2 {
-  margin: 0;
-  font-size: 15px;
-}
-
-.settings-footer {
-  border-top: 1px solid var(--border);
-  border-bottom: 0;
-  color: var(--text-muted);
-  font-size: 12px;
-}
-
-.close-btn,
-.custom-input-group button,
-.toggle-switch {
-  cursor: pointer;
-}
-
-.settings-content {
-  max-height: 50vh;
-  overflow-y: auto;
-  padding: 20px;
-}
-
-.section-title {
-  margin-bottom: 12px;
-  color: var(--text-muted);
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-}
-
-.server-list,
-.wisp-option,
-.custom-input-group {
-  display: flex;
-}
-
-.server-list {
-  flex-direction: column;
-  gap: 6px;
-  margin-bottom: 20px;
-}
-
-.wisp-option {
-  flex-direction: column;
-  gap: 4px;
-  padding: 12px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.wisp-option-header,
-.server-status,
-.custom-input-group {
-  display: flex;
-  align-items: center;
-}
-
-.wisp-option-header,
-.custom-input-group {
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.wisp-option-url,
-.ping-text {
-  color: var(--text-muted);
-  font-family: Consolas, monospace;
-  font-size: 11px;
-}
-
-.status-indicator {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--text-muted);
-}
-
-.status-success { background: #22c55e; }
-.status-error { background: #ef4444; }
-
-.custom-input-group input {
-  flex: 1;
-  height: 36px;
-  padding: 0 12px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  outline: none;
-}
-
-.custom-input-group button {
-  height: 36px;
-  padding: 0 14px;
-  border: 0;
-  border-radius: 6px;
-}
-
-.toggle-switch {
-  position: relative;
-  width: 40px;
-  height: 20px;
-  border-radius: 10px;
-  background: var(--border);
-}
-
-.toggle-switch.active {
-  background: #111111;
-}
-
-.toggle-knob {
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: #ffffff;
-  transition: transform 0.2s;
-}
-
-.toggle-switch.active .toggle-knob {
-  transform: translateX(20px);
-}
-
-.flex {
-  display: flex;
 }
