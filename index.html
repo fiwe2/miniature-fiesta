@@ -19,9 +19,31 @@
 </head>
 
 <body>
+    <!-- Home Button -->
 
 
+    <div id="app"></div>
 
+    <div class="wisp-settings-modal hidden" id="wisp-settings-modal">
+        <div class="settings-card">
+            <div class="settings-header">
+                <h2><i class="fa-solid fa-server"></i> Proxy Settings</h2>
+                <button class="close-btn" id="close-wisp-modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="settings-content">
+                <div class="section-title"><i class="fa-solid fa-cloud"></i></div>
+                <div class="server-list" id="server-list"></div>
+                <div class="section-title"><i class="fa-solid fa-plus-circle"></i> </div>
+                <div class="custom-input-group">
+                    <input type="text" id="custom-wisp-input" placeholder="">
+                    <button id="save-custom-wisp"><i class="fa-solid fa-plus"></i></button>
+                </div>
+            </div>
+            <div class="settings-footer">
+               
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>
