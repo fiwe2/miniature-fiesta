@@ -1,6 +1,3 @@
-// =====================================================
-// CONFIGURATION
-// =====================================================
 const DEFAULT_WISP = window.SITE_CONFIG?.defaultWisp ?? "wss://anura.pro/wisp/";
 
 const BareMux = window.BareMux ?? { BareMuxConnection: class { setTransport() {} } };
@@ -9,17 +6,11 @@ let sharedScramjet = null;
 let sharedConnection = null;
 let sharedConnectionReady = false;
 
-// =====================================================
-// UTILITIES
-// =====================================================
 const getBasePath = () => {
     const basePath = location.pathname.replace(/[^/]*$/, '');
     return basePath.endsWith('/') ? basePath : basePath + '/';
 };
 
-// =====================================================
-// INITIALIZATION
-// =====================================================
 async function getSharedScramjet() {
     if (sharedScramjet) return sharedScramjet;
 
@@ -107,9 +98,6 @@ async function initializeBrowser() {
     });
 }
 
-// =====================================================
-// MAIN INITIALIZATION
-// =====================================================
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         await getSharedScramjet();

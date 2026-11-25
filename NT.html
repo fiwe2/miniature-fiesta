@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Search</title>
+  <title>George's Marvullous medicine</title>
+  <link rel="icon" href="https://gospartans.neocities.org/images-removebg-preview.png">
   <style>
     * { box-sizing: border-box; }
     body {
@@ -44,7 +45,7 @@
   </main>
   <script>
     document.getElementById('searchForm').addEventListener('submit', event => {
-      event.preventEventDefault?.();
+      event.preventDefault();
       const query = document.getElementById('searchInput').value.trim();
       if (query) {
         window.parent.postMessage({
